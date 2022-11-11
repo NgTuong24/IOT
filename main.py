@@ -3,8 +3,8 @@ import pandas as pd
 from data_analysis import DataAnalysis
 import seaborn as sns
 from matplotlib import pyplot as plt
-# import matplotlib
-# matplotlib.use('TkAgg')
+import matplotlib
+matplotlib.use('TkAgg')
 from models import Models
 
 if __name__ == "__main__":
@@ -32,10 +32,12 @@ if __name__ == "__main__":
 
     # #
     df = data_analysis.replace_val(df=df, val_old=-200, val_new=np.nan)
-    # data_analysis.show_percent_missing_values(df=df)
+
     # drop attribute has missing data > 80%
     state, list_attribute_has_nan_value = data_analysis.check_null_data(df=df)
+    # print(data_analysis.check_null_data(df=df))
     if state:
+        data_analysis.show_percent_missing_values(df=df)
         list_drop = []
         for attribute in list_attribute_has_nan_value:
             if data_analysis.calculate_percent_missing_data(df=df, attribute=attribute[0]) >= 80:
@@ -67,6 +69,7 @@ if __name__ == "__main__":
     # sort
     list_correlation = sorted(list_correlation, key=lambda x: abs(x[1]))
     print("List Correlation (Increase): ", list_correlation)
+    print()
 
     # # models-training_testing
     model = Models(df=df)
