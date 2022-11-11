@@ -28,6 +28,7 @@ class DataAnalysis:
     def check_null_data(self, df: DataFrame):
         list_feature_has_value_is_null = []
         check_null = df.isna().sum()
+        # print(check_null)
         for index, value in enumerate(check_null, 0):
             if value > 0:
                 list_feature_has_value_is_null.append((df.columns[index], value))
@@ -40,6 +41,7 @@ class DataAnalysis:
     def show_percent_missing_values(self, df: DataFrame):
         plt.figure(figsize=(12, 6))
         missing_values = round(df.isna().sum() * 100 / len(df), 2)
+        print(missing_values)
         # lấy các giá trị > 0
         missing_values = missing_values[missing_values > 0]
         missing_values.sort_values(inplace=True, ascending=False)

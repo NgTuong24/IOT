@@ -8,6 +8,7 @@ from matplotlib import pyplot as plt
 from models import Models
 
 if __name__ == "__main__":
+    # data = pd.read_csv("./dataset/diabetes.csv", sep="\t")
     data = pd.read_csv("./dataset/AirQuality1.csv", sep=",")
     data_analysis = DataAnalysis()
     # print(data)
@@ -18,8 +19,8 @@ if __name__ == "__main__":
     # print(df)
 
     # # Drop Feature
-    df = data_analysis.drop_feature(df=df, feature="Date")
-    df = data_analysis.drop_feature(df=df, feature="Time")
+    # df = data_analysis.drop_feature(df=df, feature="Date")
+    # df = data_analysis.drop_feature(df=df, feature="Time")
 
     # # Data format
     df = data_analysis.replace_val(df=df, val_old=',', val_new='.')
@@ -31,19 +32,21 @@ if __name__ == "__main__":
 
     # #
     df = data_analysis.replace_val(df=df, val_old=-200, val_new=np.nan)
-    data_analysis.show_percent_missing_values(df=df)
+    # data_analysis.show_percent_missing_values(df=df)
     # drop attribute has missing data > 80%
     state, list_attribute_has_nan_value = data_analysis.check_null_data(df=df)
-    list_drop = []
-    for attribute in list_attribute_has_nan_value:
-        if data_analysis.calculate_percent_missing_data(df=df, attribute=attribute[0]) >= 80:
-            df = data_analysis.drop_feature(df=df, feature=attribute[0])
-            list_drop.append(attribute)
-    list_attribute_has_nan_value = list(set(list_attribute_has_nan_value) ^ set(list_drop))
+    if state:
+        list_drop = []
+        for attribute in list_attribute_has_nan_value:
+            if data_analysis.calculate_percent_missing_data(df=df, attribute=attribute[0]) >= 80:
+                df = data_analysis.drop_feature(df=df, feature=attribute[0])
+                list_drop.append(attribute)
+        list_attribute_has_nan_value = list(set(list_attribute_has_nan_value) ^ set(list_drop))
 
     # # Removing Outliers
     # print(data_analysis.limit_value_feature(df=df))
-    df = data_analysis.filling_missing_values(df=df, list_feature_has_nan_value=list_attribute_has_nan_value)
+    if state:
+        df = data_analysis.filling_missing_values(df=df, list_feature_has_nan_value=list_attribute_has_nan_value)
     df = data_analysis.data_cleaning(df=df)
     # reset index
     df = data_analysis.reset_index(df=df)
