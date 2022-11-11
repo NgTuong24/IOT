@@ -3,6 +3,8 @@ import pandas as pd
 from data_analysis import DataAnalysis
 import seaborn as sns
 from matplotlib import pyplot as plt
+# import matplotlib
+# matplotlib.use('TkAgg')
 from models import Models
 
 if __name__ == "__main__":
